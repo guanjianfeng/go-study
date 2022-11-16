@@ -1,0 +1,67 @@
+syntax="proto3";
+option go_package = ".;proto";
+service Goods{
+  rpc BatchGetGoods(BatchGoodsIdInfo) returns(GoodsListResponse); //批量获取商品信息
+  rpc CreateGoods(CreateGoodsInfo) returns (GoodsInfoResponse);
+}
+
+message BatchGoodsIdInfo {
+  repeated int32 id = 1;
+}
+
+message GoodsListResponse {
+  int32 total = 1;
+  repeated GoodsInfoResponse data = 2;
+}
+
+message GoodsInfoResponse {
+  int32 id = 1;
+  int32 categoryId = 2;
+  string name = 3;
+  string goodsSn = 4;
+  int32 clickNum = 5;
+  int32 soldNum = 6;
+  int32 favNum = 7;
+  float marketPrice = 9;
+  float shopPrice = 10;
+  string goodsBrief = 11;
+  string goodsDesc = 12;
+  bool shipFree = 13;
+  repeated string images = 14;
+  repeated string descImages = 15;
+  string goodsFrontImage = 16;
+  bool isNew = 17;
+  bool isHot = 18;
+  bool onSale = 19;
+  int64 addTime = 20;
+  CategoryBriefInfoResponse category = 21;
+  BrandInfoResponse brand = 22;
+}
+message CreateGoodsInfo {
+  int32 id = 1;
+  string name = 2;
+  string goodsSn = 3;
+  int32 stocks = 7; //库存，
+  float marketPrice = 8;
+  float shopPrice = 9;
+  string goodsBrief = 10;
+  string goodsDesc = 11;
+  bool shipFree = 12;
+  repeated string images = 13;
+  repeated string descImages = 14;
+  string goodsFrontImage = 15;
+  bool isNew = 16;
+  bool isHot = 17;
+  bool onSale = 18;
+  int32 categoryId = 19;
+  int32 brandId = 20;
+}
+message CategoryBriefInfoResponse {
+  int32 id = 1;
+  string name = 2;
+}
+message BrandInfoResponse {
+  int32 id = 1;
+  string name = 2;
+  string logo = 3;
+}

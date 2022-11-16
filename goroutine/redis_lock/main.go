@@ -16,7 +16,7 @@ func main() {
 	// implements the `redis.Pool` interface.
 	//这里的变量哪些可以放到global中， redis的配置是否应该在nacos中
 	client := goredislib.NewClient(&goredislib.Options{
-		Addr: "192.168.0.104:6379",
+		Addr: "localhost:6379",
 	})
 	pool := goredis.NewPool(client) // or, pool := redigo.NewPool(...)
 
@@ -31,7 +31,7 @@ func main() {
 
 	var wg sync.WaitGroup
 	wg.Add(gNum)
-	for i :=0 ;i<gNum;i++ {
+	for i := 0; i < gNum; i++ {
 		go func() {
 			defer wg.Done()
 			/**
@@ -44,7 +44,7 @@ func main() {
 			4.如果获取锁成功，则锁的真正有效时间减去第三步的时间差的时间，比如TTL是5秒，获取所有锁用了2秒，则真正的锁的有效时间为3秒（其实应该减去时钟漂移）
 			5.如果客户端由于某种原因获取锁失败，便会解锁所有锁的实例；因为有可能获取了 小于3个redis锁实例，必须释放掉，否则影响其他client获取
 			**/
-			mutex := rs.NewMutex(mutexname)
+			mutex := rs.NewMutex(mutexname, redsync.WithTries(100), redsync.WithExpiry(time.Second*10))
 
 			fmt.Println("开始获取锁")
 			if err := mutex.Lock(); err != nil {
@@ -53,7 +53,7 @@ func main() {
 
 			fmt.Println("获取锁成功")
 
-			time.Sleep(time.Second*8) // 业务逻辑
+			time.Sleep(time.Second * 8) // 业务逻辑
 
 			fmt.Println("开始释放锁")
 			if ok, err := mutex.Unlock(); !ok || err != nil {

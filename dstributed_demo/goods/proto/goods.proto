@@ -1,0 +1,49 @@
+syntax="proto3";
+import "google/protobuf/empty.proto";
+option go_package = ".;proto";
+
+service Goods{
+  //现在用户提交订单有多个商品，你得批量查询商品的信息吧
+  rpc BatchGetGoods(BatchGoodsIdInfo) returns(GoodsListResponse); //批量获取商品信息
+}
+message BatchGoodsIdInfo {
+  repeated int32 id = 1;
+}
+message CategoryBriefInfoResponse {
+  int32 id = 1;
+  string name = 2;
+}
+message BrandInfoResponse {
+  int32 id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message GoodsInfoResponse {
+  int32 id = 1;
+  int32 categoryId = 2;
+  string name = 3;
+  string goodsSn = 4;
+  int32 clickNum = 5;
+  int32 soldNum = 6;
+  int32 favNum = 7;
+  float marketPrice = 9;
+  float shopPrice = 10;
+  string goodsBrief = 11;
+  string goodsDesc = 12;
+  bool shipFree = 13;
+  repeated string images = 14;
+  repeated string descImages = 15;
+  string goodsFrontImage = 16;
+  bool isNew = 17;
+  bool isHot = 18;
+  bool onSale = 19;
+  int64 addTime = 20;
+  CategoryBriefInfoResponse category = 21;
+  BrandInfoResponse brand = 22;
+}
+
+message GoodsListResponse {
+  int32 total = 1;
+  repeated GoodsInfoResponse data = 2;
+}

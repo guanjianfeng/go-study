@@ -1,0 +1,28 @@
+syntax="proto3";
+option go_package = ".;proto";
+service Order {
+  //订单
+  rpc CreateOrder(OrderRequest) returns (OrderInfoResponse); //创建订单
+}
+message OrderRequest {
+  int32 id = 1;
+  int32 userId = 2;
+  string address = 3;
+  string name = 4;
+  string mobile = 5;
+  string post = 6;
+}
+
+message OrderInfoResponse {
+  int32 id = 1;
+  int32 userId = 2;
+  string orderSn = 3;
+  string payType = 4;
+  string status = 5;
+  string post = 6;
+  float total = 7;
+  string address = 8;
+  string name = 9;
+  string mobile = 10;
+  string addTime = 11;
+}
